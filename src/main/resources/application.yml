@@ -1,0 +1,9 @@
+# gRPC 서버 포트 설정
+grpc:
+  server:
+    port: 50051
+
+server:
+  servlet:
+    encoding:
+      force: true

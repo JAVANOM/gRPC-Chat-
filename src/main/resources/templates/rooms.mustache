@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Rooms</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .rooms-container {
+            width: 90%;
+            max-width: 400px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 105px);
+            padding: 10px;
+            margin-right: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            transition: color 0.3s;
+            font-size: 16px;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        .room-link {
+            display: block;
+            padding: 10px;
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .room-link:hover {
+            background-color: #e7e7e7;
+        }
+    </style>
+</head>
+<body>
+<div class="rooms-container">
+    <h1>모두의 채팅방</h1>
+    <p>{{user}} 님 환영합니다!</p>
+    <form id="createRoomForm" action="/chat/create-room" method="post">
+        <label for="roomName" hidden>방 만들기</label>
+        <input type="text" id="roomName" name="roomName" placeholder="Enter room name">
+
+        <br/>
+
+        <label for="isPrivateYN">비공개 여부</label>
+        <input type="checkbox" id="isPrivateYN" name="isPrivateYN">
+
+        <br/>
+
+        <button type="submit">생성하기</button>
+    </form>
+
+    <h2>접속 가능한 채팅방 목록:</h2>
+    <ul>
+        {{#rooms}}
+            <li><a class="room-link" href="/chat/{{id}}?user={{user}}">{{name}}</a></li>
+        {{/rooms}}
+    </ul>
+</div>
+
+<script>
+    document.getElementById('createRoomForm').addEventListener('submit', function(event) {
+        const isPrivateCheckbox = document.getElementById('isPrivateYN');
+
+        if (isPrivateCheckbox.checked) {
+            isPrivateCheckbox.value = "Y"; // 체크된 경우 "Y"로 설정
+        } else {
+            // 체크되지 않은 경우 "N" 값을 전달
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "isPrivateYN";
+            hiddenInput.value = "N";
+            this.appendChild(hiddenInput);
+        }
+    });
+</script>
+
+</body>
+</html>

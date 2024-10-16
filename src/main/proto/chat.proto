@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option java_package = "com.example.grpc.chat";
+option java_multiple_files = true;
+
+// DTO
+message ChatMessage {
+  string roomId = 1;
+  string user = 2;
+  string message = 3;
+  int64 timestamp = 4;
+}
+// DTO
+// 멤버 생성 응답
+message JoinRoomRequest {
+  string roomId = 1;
+  string user = 2;
+}
+
+message Empty {
+}
+
+service ChatService {
+  // 채팅방에 접속하여 메시지를 주고받는 양방향 스트리밍 RPC
+  rpc Chat(stream ChatMessage) returns (stream ChatMessage);
+
+  // 채팅방에 사용자 추가
+  rpc JoinRoom(JoinRoomRequest) returns (Empty);
+}
